@@ -3,8 +3,215 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Bunso</title>
+	<style>
+		@import url('https://fonts.googleapis.com/css?family=Arima+Madurai');
+		html, body, div, span, applet, object, iframe,
+		h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+		a, abbr, acronym, address, big, cite, code,
+		del, dfn, em, img, ins, kbd, q, s, samp,
+		small, strike, strong, sub, sup, tt, var,
+		b, u, i, center,
+		dl, dt, dd, ol, ul, li,
+		fieldset, form, label, legend,
+		table, caption, tbody, tfoot, thead, tr, th, td,
+		article, aside, canvas, details, embed, 
+		figure, figcaption, footer, header, hgroup, 
+		menu, nav, output, ruby, section, summary,
+		time, mark, audio, video {
+			margin: 0;
+			padding: 0;
+			border: 0;
+			font-size: 100%;
+			font: inherit;
+			vertical-align: baseline;
+		}
+		/* HTML5 display-role reset for older browsers */
+		article, aside, details, figcaption, figure, 
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+		body {
+			line-height: 1;
+		}
+		ol, ul {
+			list-style: none;
+		}
+		blockquote, q {
+			quotes: none;
+		}
+		blockquote:before, blockquote:after,
+		q:before, q:after {
+			content: '';
+			content: none;
+		}
+		table {
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
+		body {
+			height: 100%;
+			max-height: 100vh;
+			background: #231b18;
+			font-size: 100%;
+			font-family: 'Arima Madurai', -apple-system, BlinkMacSystemFont, “Segoe UI”, “Roboto”, “Oxygen”, “Ubuntu”, “Fira Sans”, “Droid Sans”, “Helvetica Neue”, sans-serif;
+		}
+		p {
+			font-size: 1.250em;
+			line-height: 1.635;
+			margin-bottom: 1.635em;
+		}
+		.overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0,0,0,0.80);
+			transition: all 0.3s cubic-bezier(.05, .69, .14, 1);
+
+			visibility: hidden;
+			opacity: 0;
+			z-index: 100;
+		}
+		.overlay.visible {
+			visibility: visible;
+			opacity: 1;
+		}
+		main {
+			position: relative;
+		}
+		.main-video {
+			display: flex;
+			justify-content: center;
+		}
+		.main-video video {
+			width: auto;
+			height: 100vh;
+			align-self: center;
+		}
+		.info {
+			position: absolute;
+			top: 15px;
+			right: 15px;
+			padding: 13px 15px;
+			z-index: 100;
+		}
+		.info span {
+			display: none;
+			color: white;
+			font-size: 32px;
+			text-shadow: 2px 2px 4px rgba(0,0,0,0.35);
+			transition: all 0.3s cubic-bezier(.05, .69, .14, 1);
+			z-index: 150;
+		}
+		.info span.visible {
+			display: block;
+		}
+		.info:hover {
+			cursor: pointer;
+		}
+		.modal-info {
+			display: flex;
+			justify-content: center;
+			position: absolute;
+			width: 95%;
+			left: 50%;
+			top: 50%;
+			max-width: 500px;
+			/*transform: translate3d(-50%,-100%,0);*/
+			transform: translate3d(-50%,-50%,0);
+
+			transition: all 0.3s cubic-bezier(.05, .69, .14, 1);
+		
+			visibility: hidden;
+			opacity: 0;
+			will-change: transform;
+			z-index: 200;
+		}
+		@media only screen and (max-width: 480px) {
+			.modal-info {
+				max-width: 320px;
+			}
+		}
+		.modal-info.visible {
+			/*transform: translate3d(-50%,100%,0);*/
+			visibility: visible;
+			opacity: 1;
+		}
+		.modal-info-content {
+			width: 100%;
+			align-self: center;
+			background: white;
+			padding: 30px;
+			border: 5px solid #eb4626;
+			border-radius: 3px;
+
+			color: #262626;
+			font-size: 16px;
+		}
+		.modal-info-content p:nth-last-child(1) {
+			margin-bottom: 0;
+		}
+		
+	</style>
 </head>
 <body>
-	<h1>Hello bitches</h1>
+	<div class="overlay"></div>
+	<main>
+		<div class="info">
+			<span class="info-text visible">&#x270D;</span>
+			<span class="close-text">&#x274E;</span>
+		</div>
+		<section class="modal-info">
+			<div class="modal-info-content">
+				<p>Bunso isn't just a dog. He's our bestfriend. A godsent. My guardian angel. The protector of my room.</p>
+				<p>You will be missed, and you'll always be in our hearts.</p>
+				<p>Rest in peace, my friend.</p>
+			</div>
+		</section>
+		<section class="main-video">
+			<video controls>
+		  	<source src="bunso.mp4" type="video/mp4">
+		  </video>
+	  </section>
+  </main>
+  <script>
+		document.addEventListener("DOMContentLoaded", function() {
+			var modal = document.querySelector('.modal-info');
+			var modalClick =  document.querySelector('.info');
+			var infoText = document.querySelector('.info-text');
+			var closeText = document.querySelector('.close-text');
+			var overlay = document.querySelector('.overlay');
+			var className = 'visible';
+
+			modalClick.addEventListener('click', function() {
+				toggleClass(modal, 'visible');
+				toggleClass(overlay, 'visible');
+				toggleClass(infoText, 'visible');
+				toggleClass(closeText, 'visible');
+			}, false);
+
+			function toggleClass(el, className) {
+				if (el.classList) {
+				  el.classList.toggle(className);
+				} else {
+				  var classes = el.className.split(' ');
+				  var existingIndex = classes.indexOf(className);
+
+				  if (existingIndex >= 0)
+				    classes.splice(existingIndex, 1);
+				  else
+				    classes.push(className);
+
+				  el.className = classes.join(' ');
+				}
+			}
+
+			function toggleClose() {
+				modalClick.querySelector('span').textContent(i)
+			}
+			
+		});
+	</script>
 </body>
 </html>
